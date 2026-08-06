@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Campus Skill Exchange | Peer-to-Peer AI Skill Trading</title>
+    <meta name="description" content="Exchange skills peer-to-peer with fellow students. AI-powered reciprocal matching, real-time swap requests, and trusted campus reviews." />
+    
+    <!-- Google Fonts: Outfit & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              display: ['Outfit', 'sans-serif'],
+            },
+            colors: {
+              brand: {
+                50: '#f0f7ff',
+                100: '#e0effe',
+                200: '#bae0fd',
+                300: '#7cc8fc',
+                400: '#36b0fa',
+                500: '#0c94eb',
+                600: '#0076c9',
+                700: '#025ea4',
+                800: '#065088',
+                900: '#0b4371',
+                950: '#072b4c',
+              },
+              accent: {
+                50: '#fdf2f8',
+                500: '#ec4899',
+                600: '#db2777',
+              },
+              emeraldCustom: {
+                500: '#10b981',
+              }
+            },
+            animation: {
+              'pulse-glow': 'pulseGlow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'float': 'float 4s ease-in-out infinite',
+              'shimmer': 'shimmer 2.5s infinite',
+            },
+            keyframes: {
+              pulseGlow: {
+                '0%, 100%': { opacity: 1, filter: 'drop-shadow(0 0 15px rgba(12, 148, 235, 0.6))' },
+                '50%': { opacity: 0.8, filter: 'drop-shadow(0 0 5px rgba(12, 148, 235, 0.2))' },
+              },
+              float: {
+                '0%, 100%': { transform: 'translateY(0px)' },
+                '50%': { transform: 'translateY(-8px)' },
+              },
+              shimmer: {
+                '100%': { transform: 'translateX(100%)' }
+              }
+            }
+          }
+        }
+      }
+    </script>
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body class="bg-slate-900 text-slate-100 font-sans antialiased min-h-screen selection:bg-brand-500 selection:text-white">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

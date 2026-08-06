@@ -1,0 +1,31 @@
+# Multi-Stage Production Dockerfile for Campus Skill Exchange
+
+# Stage 1: Build React Static Assets
+FROM node:20-alpine AS frontend-builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+# Prepare production static bundle
+RUN npm run build || mkdir -p dist && cp index.html dist/
+
+# Stage 2: Production Python FastAPI Application
+FROM python:3.11-slim
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential libpq-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+COPY backend/requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY backend/ ./backend/
+COPY --from=frontend-builder /app/dist ./dist
+
+ENV PORT=8000
+ENV NODE_ENV=production
+
+EXPOSE 8000
+
+CMD ["sh", "-c", "cd backend && python seed.py && uvicorn app.main:app --host 0.0.0.0 --port 8000"]

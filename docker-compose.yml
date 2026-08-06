@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: campus_skill_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: campus_skills_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/database/schema.sql:/docker-entrypoint-initdb.d/1_schema.sql
+      - ./backend/database/seed.sql:/docker-entrypoint-initdb.d/2_seed.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d campus_skills_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  fastapi_backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: campus_skill_fastapi
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgrespassword@postgres:5432/campus_skills_db
+      SECRET_KEY: campus_skill_exchange_super_secret_jwt_key_2026
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
