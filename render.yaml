@@ -28,4 +28,3 @@ databases:
 
   - name: campus-skills-db
     databaseName: campus_skills_db
-    user: postgres
