@@ -12,12 +12,18 @@ import { AIMatches } from './pages/AIMatches';
 import { Dashboard } from './pages/Dashboard';
 import { ChatHub } from './pages/ChatHub';
 import { Profile } from './pages/Profile';
+import { Login } from './pages/Login';
+import { VerifyProfile } from './pages/VerifyProfile';
 
 export function App() {
-  const { activeTab } = useApp();
+  const { activeTab, authLoading } = useApp();
 
   const renderTab = () => {
     switch (activeTab) {
+      case 'login':
+        return <Login />;
+      case 'verify-profile':
+        return <VerifyProfile />;
       case 'marketplace':
         return <Marketplace />;
       case 'aimatches':
@@ -33,27 +39,41 @@ export function App() {
     }
   };
 
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-900 text-slate-100">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-brand-500 border-t-transparent"></div>
+      </div>
+    );
+  }
+
+  const isAuthScreen = activeTab === 'login' || activeTab === 'verify-profile';
+
   return (
     <div className="min-h-screen flex flex-col justify-between bg-slate-900 text-slate-100 selection:bg-brand-500 selection:text-white">
       
       {/* Top Header */}
-      <Navbar />
+      {!isAuthScreen && <Navbar />}
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className={`flex-1 max-w-7xl w-full mx-auto ${isAuthScreen ? '' : 'px-4 sm:px-6 lg:px-8 py-8'}`}>
         {renderTab()}
       </main>
 
       {/* Modals & Overlays */}
-      <SwapRequestModal />
-      <AddSkillModal />
-      <ReviewModal />
+      {!isAuthScreen && (
+        <>
+          <SwapRequestModal />
+          <AddSkillModal />
+          <ReviewModal />
+        </>
+      )}
 
       {/* Global Notifications Toast */}
       <Toast />
 
       {/* Global Footer */}
-      <Footer />
+      {!isAuthScreen && <Footer />}
 
     </div>
   );

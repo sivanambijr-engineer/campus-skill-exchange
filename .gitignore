@@ -5,3 +5,12 @@ dist/
 .vscode/
 .DS_Store
 *.log
+
+# Python virtual environments
+backend/venv/
+venv/
+.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]

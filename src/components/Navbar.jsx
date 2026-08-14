@@ -9,7 +9,8 @@ export const Navbar = () => {
     setActiveTab,
     swaps,
     setIsAddSkillModalOpen,
-    isConnectedToBackend
+    isConnectedToBackend,
+    logout
   } = useApp();
 
 
@@ -353,7 +354,7 @@ export const Navbar = () => {
       }
     `}
   >
-    {currentUser.avatarInitials}
+    {currentUser.avatarInitials || (currentUser.fullName ? currentUser.fullName.charAt(0).toUpperCase() : 'U')}
   </div>
 
   <span
@@ -371,6 +372,24 @@ export const Navbar = () => {
   />
 
 </div>
+
+            <button
+              onClick={logout}
+              className="
+                ml-2
+                px-3 py-2
+                rounded-xl
+                text-xs
+                font-bold
+                text-rose-400
+                bg-rose-500/10
+                border border-rose-500/20
+                hover:bg-rose-500/20
+                transition
+              "
+            >
+              Sign Out
+            </button>
           </div>
 
 

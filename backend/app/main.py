@@ -4,35 +4,110 @@ from datetime import datetime
 
 from app.config import settings
 from app.database import engine, Base
-from app.routers import auth, users, skills, swaps, messages, reviews, ai
+from app.routers import (
+    auth,
+    users,
+    skills,
+    swaps,
+    messages,
+    reviews,
+    ai,
+)
 
-# Auto create SQLite tables
+
+# =========================================================
+# DATABASE
+# =========================================================
+
 Base.metadata.create_all(bind=engine)
+
+
+# =========================================================
+# FASTAPI APPLICATION
+# =========================================================
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
     version=settings.PROJECT_VERSION,
     docs_url="/docs",
-    redoc_url="/redoc"
+    redoc_url="/redoc",
 )
 
-# CORS Middleware Setup
+
+# =========================================================
+# CORS
+# =========================================================
+#
+# LOCAL DEVELOPMENT
+#
+# Frontend:
+#   http://localhost:3001
+#
+# Backend:
+#   http://localhost:8000
+#
+# IMPORTANT:
+# These localhost origins are for development/testing.
+# Before production deployment, replace them with your
+# actual deployed frontend URL.
+# =========================================================
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "http://localhost:3002",
+],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Include Routers
-app.include_router(auth.router, prefix=settings.API_PREFIX)
-app.include_router(users.router, prefix=settings.API_PREFIX)
-app.include_router(skills.router, prefix=settings.API_PREFIX)
-app.include_router(swaps.router, prefix=settings.API_PREFIX)
-app.include_router(messages.router, prefix=settings.API_PREFIX)
-app.include_router(reviews.router, prefix=settings.API_PREFIX)
-app.include_router(ai.router, prefix=settings.API_PREFIX)
+
+# =========================================================
+# ROUTERS
+# =========================================================
+
+app.include_router(
+    auth.router,
+    prefix=settings.API_PREFIX,
+)
+
+app.include_router(
+    users.router,
+    prefix=settings.API_PREFIX,
+)
+
+app.include_router(
+    skills.router,
+    prefix=settings.API_PREFIX,
+)
+
+app.include_router(
+    swaps.router,
+    prefix=settings.API_PREFIX,
+)
+
+app.include_router(
+    messages.router,
+    prefix=settings.API_PREFIX,
+)
+
+app.include_router(
+    reviews.router,
+    prefix=settings.API_PREFIX,
+)
+
+app.include_router(
+    ai.router,
+    prefix=settings.API_PREFIX,
+)
+
+
+# =========================================================
+# ROOT ENDPOINT
+# =========================================================
 
 @app.get("/")
 def root():
@@ -40,13 +115,18 @@ def root():
         "app": settings.PROJECT_NAME,
         "version": settings.PROJECT_VERSION,
         "docs": "/docs",
-        "health": "/api/health"
+        "health": "/api/health",
     }
+
+
+# =========================================================
+# HEALTH CHECK
+# =========================================================
 
 @app.get("/api/health")
 def health_check():
     return {
         "status": "healthy",
         "timestamp": datetime.utcnow().isoformat(),
-        "database": "connected"
+        "database": "connected",
     }
