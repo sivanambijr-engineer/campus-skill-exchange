@@ -38,27 +38,41 @@ app = FastAPI(
 # CORS
 # =========================================================
 #
-# LOCAL DEVELOPMENT
-#
-# Frontend:
+# LOCAL DEVELOPMENT:
+#   http://localhost:3000
 #   http://localhost:3001
+#   http://localhost:3002
 #
-# Backend:
-#   http://localhost:8000
+# VERCEL PRODUCTION:
+#   https://campus-skill-exchange-henna.vercel.app
+#
+# VERCEL PREVIEW:
+#   https://campus-skill-exchange-<deployment-id>-niviq.vercel.app
 #
 # IMPORTANT:
-# These localhost origins are for development/testing.
-# Before production deployment, replace them with your
-# actual deployed frontend URL.
+# allow_credentials=True is required because authentication
+# uses an HTTP-only access_token cookie.
+# Therefore we must NOT use allow_origins=["*"].
 # =========================================================
 
 app.add_middleware(
     CORSMiddleware,
+
     allow_origins=[
-    "http://localhost:3000",
-    "http://localhost:3001",
-    "http://localhost:3002",
-],
+        # Local development
+        "http://localhost:3000",
+        "http://localhost:3001",
+        "http://localhost:3002",
+
+        # Vercel production
+        "https://campus-skill-exchange-henna.vercel.app",
+    ],
+
+    # Allow Vercel preview deployments.
+    # Example:
+    # https://campus-skill-exchange-ckolwwzga-niviq.vercel.app
+    allow_origin_regex=r"https://campus-skill-exchange-[a-z0-9]+-niviq\.vercel\.app",
+
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
