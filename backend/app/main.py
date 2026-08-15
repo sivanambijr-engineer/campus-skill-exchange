@@ -70,8 +70,8 @@ app.add_middleware(
 
     # Allow Vercel preview deployments.
     # Example:
-    # https://campus-skill-exchange-ckolwwzga-niviq.vercel.app
-    allow_origin_regex=r"https://campus-skill-exchange-[a-z0-9]+-niviq\.vercel\.app",
+    # https://campus-skill-exchange-git-feature-google-jwt-auth-niviq.vercel.app
+    allow_origin_regex=r"https://campus-skill-exchange-[a-z0-9-]+-niviq\.vercel\.app",
 
     allow_credentials=True,
     allow_methods=["*"],
