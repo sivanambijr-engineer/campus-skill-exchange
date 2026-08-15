@@ -124,6 +124,10 @@ def get_current_user(
         },
     )
 
+    # No access token was provided
+    if not token:
+        raise credentials_exception
+
     try:
         payload = jwt.decode(
             token,
