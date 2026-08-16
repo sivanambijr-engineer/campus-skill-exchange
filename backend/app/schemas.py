@@ -15,6 +15,14 @@ class UserLogin(BaseModel):
     email: EmailStr
     password: str
 
+class GoogleAuthRequest(BaseModel):
+    credential: str
+
+class ProfileUpdateRequest(BaseModel):
+    major: str
+    campus_name: str
+    bio: str
+
 class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
@@ -38,6 +46,7 @@ class UserResponse(BaseModel):
     campus_name: str
     major: Optional[str] = None
     bio: Optional[str] = None
+    profile_completed: bool = False
     reputation_score: float
     karma_points: int
     swaps_completed: int
@@ -69,20 +78,28 @@ class SwapStatusUpdate(BaseModel):
 
 class SwapResponse(BaseModel):
     id: str
+
     requester_id: str
+    requester_name: str
+    requester_avatar: Optional[str] = None
+
     recipient_id: str
+    recipient_name: str
+    recipient_avatar: Optional[str] = None
+
     offered_skill: str
     desired_skill: str
     status: str
+
     meeting_type: str
-    meeting_location: Optional[str]
-    proposed_time: Optional[str]
-    match_score: int
+    meeting_location: Optional[str] = None
+    proposed_time: Optional[str] = None
+
+    match_score: Optional[int] = None
     created_at: datetime
 
     class Config:
         from_attributes = True
-
 # Message Schemas
 class MessageCreate(BaseModel):
     content: str

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, Float, DateTime, ForeignKey, Text
+from sqlalchemy import Column, String, Integer, Float, DateTime, ForeignKey, Text, Boolean
 from sqlalchemy.orm import relationship
 from datetime import datetime
 import uuid
@@ -13,12 +13,14 @@ class User(Base):
 
     id = Column(String, primary_key=True, default=generate_uuid)
     email = Column(String, unique=True, index=True, nullable=False)
-    password_hash = Column(String, nullable=False)
+    password_hash = Column(String, nullable=True) # Nullable for Google Auth users
+    google_id = Column(String, unique=True, index=True, nullable=True)
     full_name = Column(String, nullable=False)
     avatar_url = Column(String, nullable=True)
     campus_name = Column(String, default="Stanford University")
     major = Column(String, nullable=True)
     bio = Column(Text, nullable=True)
+    profile_completed = Column(Boolean, default=False)
     reputation_score = Column(Float, default=5.0)
     karma_points = Column(Integer, default=100)
     swaps_completed = Column(Integer, default=0)

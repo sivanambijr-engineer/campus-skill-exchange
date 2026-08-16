@@ -16,12 +16,14 @@ DROP TABLE IF EXISTS ai_match_logs CASCADE;
 CREATE TABLE users (
     id VARCHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4()::text,
     email VARCHAR(255) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
+    password_hash VARCHAR(255),
+    google_id VARCHAR(255) UNIQUE,
     full_name VARCHAR(100) NOT NULL,
     avatar_url TEXT,
     campus_name VARCHAR(150) DEFAULT 'Stanford University',
     major VARCHAR(150),
     bio TEXT,
+    profile_completed BOOLEAN DEFAULT FALSE,
     reputation_score NUMERIC(3, 2) DEFAULT 5.00 CHECK (reputation_score >= 1.00 AND reputation_score <= 5.00),
     karma_points INT DEFAULT 100 CHECK (karma_points >= 0),
     swaps_completed INT DEFAULT 0 CHECK (swaps_completed >= 0),
@@ -30,6 +32,7 @@ CREATE TABLE users (
 );
 
 CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_users_google_id ON users(google_id);
 
 -- 2. SKILLS TABLE
 CREATE TABLE skills (
